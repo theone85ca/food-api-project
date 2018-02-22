@@ -1,3 +1,7 @@
+// Mongo DB init - mongod  --dbpath c:\mongo\data\db
+//yarn start
+// yarn run start-w
+
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -19,14 +23,14 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const User = require('./models/user');
 
 
-
 const index = require('./routes/index');
 const api = require('./routes/api/index');
 const users = require('./routes/api/users');
+const authentication = require('./routes/api/authentication');
 
 const app = express();
 //Connect mongoose
-mongoose.connect('mongodb://localhost/musiclist')
+mongoose.connect('mongodb://localhost/musiclist');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -59,6 +63,7 @@ app.use(webpackHotMiddleware(webpackCompiler, {
 
 app.use('/api', api);
 app.use('/api/users', users);
+app.use('/api/authentication', authentication);
 app.use('/*', index);
 
 // Configure passport
