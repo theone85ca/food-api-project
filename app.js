@@ -1,6 +1,7 @@
 // Mongo DB init - mongod  --dbpath c:\mongo\data\db
-//yarn start
-// yarn run start-w
+// yarn run build-prod
+// yarn run start-prod
+require('babel-register');
 
 const express = require('express');
 const path = require('path');
@@ -17,7 +18,7 @@ const expressSession = require('express-session')({
     saveUninitialized: false
 });
 const webpack = require('webpack');
-const webpackConfig = require('./webpack.config');
+const webpackConfig = require('./webpack.config.babel');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const User = require('./models/user');
@@ -48,6 +49,7 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Webpack Server
+if (process.env.NODE_ENV !== 'production') {
 const webpackCompiler = webpack(webpackConfig);
 app.use(webpackDevMiddleware(webpackCompiler, {
   publicPath: webpackConfig.output.publicPath,
@@ -60,6 +62,8 @@ app.use(webpackDevMiddleware(webpackCompiler, {
 app.use(webpackHotMiddleware(webpackCompiler, {
   log: console.log,
 }));
+}
+
 
 app.use('/api', api);
 app.use('/api/users', users);
