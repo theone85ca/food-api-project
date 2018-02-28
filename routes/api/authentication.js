@@ -8,23 +8,18 @@ const router = express.Router();
 // configure mongoose promises
 mongoose.Promise = global.Promise;
 
-//POST to /register
-router.post('/register', (req, res) => {
-  const newUser = new User({
-    username: req.body.username,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-  });
+// GET to check session
+router.get('/checksession', (req, res) => {
+  if (req.user) {
+    return res.send(JSON.stringify(req.user));
+  }
+  return res.send(JSON.stringify({}));
+});
 
-  // Save via passports "register" method
-  User.register(newUser, req.body.password, (err, user) => {
-    if (err) {
-      return res.send(JSON.stringify({ error: err}));
-    }
-    // Else, return JSON object with user info
-    return res.send(JSON.stringify(user));
-  });
+// GET to /logout
+router.get('/logout', (req, res) => {
+  req.logout();
+  return res.send(JSON.stringify(req.user));
 });
 
 
@@ -49,10 +44,30 @@ router.post('/login', async (req, res) => {
 });
 
 
-// GET to /logout
-router.get('/logout', (req, res) => {
-  req.logout();
-  return res.send(JSON.stringify(req.user));
+//POST to /register
+router.post('/register', (req, res) => {
+  const newUser = new User({
+    username: req.body.username,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+  });
+
+  // Save via passports "register" method
+  User.register(newUser, req.body.password, (err) => {
+    if (err) {
+      return res.send(JSON.stringify({ error: err}));
+    }
+    // Otherwise log them in
+    return passport.authenticate('local')(req, res, () => {
+      // If logged in, we should have information to send back
+      if (req.user) {
+        return res.send(JSON.stringify(req.user));
+      }
+      // Otherwise return an error
+      return res.send(JSON.stringify({ error: 'There was an error logging in' }))
+    });
+  });
 });
 
 module.exports = router;
