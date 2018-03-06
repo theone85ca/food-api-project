@@ -9,6 +9,8 @@ import RegisterPage from './account/RegisterPageContainer';
 import RegistrationSuccessPage from './account/RegistrationSuccessPageContainer';
 import ErrorBox from './shared/ErrorBoxContainer';
 import ResetPasswordPage from './account/ResetPasswordPageContainer';
+import ChangePasswordPage from './account/ChangePasswordPageContainer';
+import AlbumsPage from './albums/AlbumsPageContainer';
 
 export default function Template(props) {
   const { authentication, progress } = props;
@@ -24,7 +26,9 @@ export default function Template(props) {
         <div className="content">
         <section className="page-content container-fluid">
         <ErrorBox />
+          <Route exact path="/albums" component={AlbumsPage} />
           <Route exact path="/account/reset-password" component={ResetPasswordPage} />
+          <Route path="/account/change-password/:hash" component={ChangePasswordPage} />
           <Route exact path="/account/register" component={RegisterPage} />
           <Route exact path="/account/registration-success" component={RegistrationSuccessPage} />
           <Route exact path="/account/login" component={LoginPage} />
