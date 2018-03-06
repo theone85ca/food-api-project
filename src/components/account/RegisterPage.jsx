@@ -1,14 +1,15 @@
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import { Button, Label } from 'reactstrap';
 
 export default class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
 
     // bound functions
-    this.compileFormData = this.compileFormData.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleValidSubmit = this.handleValidSubmit.bind(this);
 
     // component state
     this.state = {
@@ -21,7 +22,8 @@ export default class ProfilePage extends React.Component {
 }
 
 // Put everything together and send it up to the register function
-compileFormData() {
+// Handle submission once all form data is valid
+handleValidSubmit() {
   const { registerFunction } = this.props;
   const formData = this.state;
   registerFunction(formData);
@@ -36,7 +38,7 @@ handleInputChange(e) {
 handleKeyPress(target) {
   if (target.charCode === 13) {
     target.preventDefault();
-    this.compileFormData();
+    this.handleValidSubmit();
   }
 }
 
@@ -48,79 +50,85 @@ handleKeyPress(target) {
         Want to get started saving your favorite bands to MusicList?
         Create an account!
       </p>
-      <Form>
-        <FormGroup>
+      <AvForm onValidSubmit={this.handleValidSubmit}>
+        <AvGroup>
           <Label for="email">Email</Label>
-          <Input
+          <AvInput
             id="email"
             name="email"
             onChange={this.handleInputChange}
             onKeyPress={this.handleKeyPress}
             placeholder="noreply@musiclist.com"
             type="email"
+            required
             value={this.state.email}
           />
-        </FormGroup>
+        </AvGroup>
 
-        <FormGroup>
+        <AvGroup>
           <Label for="password">Password</Label>
-          <Input
+          <AvInput
             id="password"
             name="password"
+            minLength="8"
             onChange={this.handleInputChange}
             onKeyPress={this.handleKeyPress}
             placeholder="password"
             type="password"
+            required
             value={this.state.password}
           />
+        <AvFeedback>Passwords must be at least eight characters in length.</AvFeedback>
           <span>
             We recommend a password service like&nbsp;
             <a href="https://www.lastpass.com" target="_blank" rel="noopener noreferrer">LastPass</a>
-            &nbsp;or <a href="https://1password.com" target="_blank" rel="noopener noreferrer">1Password</a>
           </span>
-        </FormGroup>
+        </AvGroup>
 
-        <FormGroup>
+        <AvGroup>
           <Label for="username">Username</Label>
-          <Input
+          <AvInput
             id="username"
             name="username"
             onChange={this.handleInputChange}
             onKeyPress={this.handleKeyPress}
             placeholder="CaptainCode"
             type="text"
+            required
             value={this.state.username}
           />
-        </FormGroup>
+        </AvGroup>
 
-        <FormGroup>
+        <AvGroup>
           <Label for="firstName">First Name</Label>
-          <Input
+          <AvInput
             id="firstName"
             name="firstName"
             onChange={this.handleInputChange}
             onKeyPress={this.handleKeyPress}
             placeholder="Jamie"
             type="text"
+            required
             value={this.state.firstName}
           />
-        </FormGroup>
+        </AvGroup>
 
-        <FormGroup>
+        <AvGroup>
           <Label for="lastName">Last Name</Label>
-          <Input
+          <AvInput
             id="lastName"
             name="lastName"
             onChange={this.handleInputChange}
             onKeyPress={this.handleKeyPress}
             placeholder="Smith"
             type="text"
+            required
             value={this.state.lastName}
           />
-        </FormGroup>
+      </AvGroup>
 
-        <Button color="primary" onClick={this.compileFormData}>Register</Button>
-      </Form>
+        <Button color="primary">Register</Button>
+      </AvForm>
         </div>
       </div>
     );

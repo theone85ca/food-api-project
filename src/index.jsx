@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 // CSS from a local file
 import './css/musiclist.scss';
+import './css/custom.css';
 
 import DevTools from './components/shared/DevTools';
 import configureStore from './store';
