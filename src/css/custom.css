@@ -1,0 +1,31 @@
+html, .content{
+  background-color: #FFF;
+}
+body {
+  background-color: transparent;
+}
+.btn-app {
+  background: #4a6c2f;
+  border-radius: 0.25rem;
+  border: none;
+  width: 100%;
+}
+.plant-logo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+}
+.logo img{
+  text-align: center;
+  height: 135px;
+  width: 135px;
+  margin: 0 auto;
+  display: block;
+  margin-top: calc(100px + 10vw);
+}
+.login-form{
+  position: absolute;
+  top: calc(200px + 15vw);
+  z-index: 100
+}
